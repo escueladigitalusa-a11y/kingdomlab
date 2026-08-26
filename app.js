@@ -272,8 +272,8 @@
       document.body.appendChild(toastEl);
     }
     toastEl.textContent = msg;
-    toastEl.className = "fixed bottom-24 left-1/2 -translate-x-1/2 z-50 px-4 py-2 rounded-lg text-sm font-medium shadow-lg transition-opacity " +
-      (isError ? "bg-rose-600 text-white" : "bg-navy text-white");
+    toastEl.className = "fixed bottom-24 left-1/2 -translate-x-1/2 z-50 px-4 py-2.5 rounded-xl text-sm font-medium shadow-lg transition-opacity " +
+      (isError ? "bg-rose-600 text-white" : "bg-black text-white");
     toastEl.style.opacity = "1";
     clearTimeout(toastEl._t);
     toastEl._t = setTimeout(function () { toastEl.style.opacity = "0"; }, 1800);
@@ -287,14 +287,14 @@
     var i = STEPS.indexOf(state.step);
     navEl.innerHTML = STEPS.map(function (s, idx) {
       var done = idx < i, active = idx === i;
-      var base = "flex items-center gap-2 px-4 md:px-5 py-2.5 rounded-xl text-sm font-semibold whitespace-nowrap transition-colors ";
-      var cls = active ? base + "bg-navy text-white" :
-        done ? base + "bg-emerald-50 text-emerald-700" :
-        base + "bg-canvas text-ink-soft";
+      var base = "flex items-center gap-2 px-4 md:px-5 py-2.5 rounded-xl text-sm font-semibold whitespace-nowrap transition-colors border ";
+      var cls = active ? base + "bg-white text-black border-white" :
+        done ? base + "bg-white/10 text-white/80 border-transparent" :
+        base + "bg-transparent text-white/45 border-white/15";
       var badge = done ?
         '<span class="material-symbols-outlined !text-[16px]">check</span>' :
         '<span class="w-5 h-5 rounded-full flex items-center justify-center text-[11px] ' +
-          (active ? "bg-gold text-navy" : "bg-white text-ink-soft border border-line") + '">' + (idx + 1) + "</span>";
+          (active ? "bg-black text-white" : "border border-white/25") + '">' + (idx + 1) + "</span>";
       return '<button type="button" data-goto="' + s + '" class="' + cls + '">' + badge + "<span>" + STEP_LABELS[s] + "</span></button>";
     }).join("");
   }
@@ -304,9 +304,9 @@
   function renderDatos() {
     var d = state.datos;
     return "" +
-      '<div class="p-6 md:p-10">' +
-      '<p class="text-xs font-bold tracking-wide text-gold uppercase mb-1">01 · Datos de contacto</p>' +
-      '<h2 class="font-display font-bold text-2xl text-navy mb-6">¿Con quién estamos trabajando?</h2>' +
+      '<div class="p-7 md:p-11">' +
+      '<p class="text-xs font-bold tracking-wide text-ink-faint uppercase mb-1.5">01 · Datos de contacto</p>' +
+      '<h2 class="font-display font-bold text-2xl md:text-[28px] text-ink mb-7">¿Con quién estamos trabajando?</h2>' +
       '<div class="grid md:grid-cols-2 gap-5 max-w-2xl">' +
       field("nombre", "Nombre de contacto", d.nombre, "Ej. María Torres") +
       field("marca", "Marca o negocio", d.marca, "Ej. Kingdom Lab") +
@@ -319,7 +319,7 @@
       return '<label class="block">' +
         '<span class="text-sm font-semibold text-ink block mb-1.5">' + label + "</span>" +
         '<input type="text" data-field="' + key + '" value="' + esc(val) + '" placeholder="' + esc(ph) + '" ' +
-        'class="w-full rounded-lg border border-line px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gold/60 focus:border-gold"/></label>';
+        'class="w-full rounded-xl border border-line bg-paper-dim/60 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-black/10 focus:border-black focus:bg-paper"/></label>';
     }
   }
 
@@ -327,25 +327,25 @@
 
   function renderOrganizacion() {
     return "" +
-      '<div class="p-6 md:p-10">' +
-      '<p class="text-xs font-bold tracking-wide text-gold uppercase mb-1">02 · Tipo de organización</p>' +
-      '<h2 class="font-display font-bold text-2xl text-navy mb-6">¿Qué tipo de marca gestionaremos?</h2>' +
+      '<div class="p-7 md:p-11">' +
+      '<p class="text-xs font-bold tracking-wide text-ink-faint uppercase mb-1.5">02 · Tipo de organización</p>' +
+      '<h2 class="font-display font-bold text-2xl md:text-[28px] text-ink mb-7">¿Qué tipo de marca gestionaremos?</h2>' +
       '<div class="grid sm:grid-cols-2 gap-4">' +
       ORG_TYPES.map(function (o) {
         var on = state.orgType === o.id;
-        return '<button type="button" data-org="' + o.id + '" class="text-left rounded-xl border-2 p-5 transition-colors ' +
-          (on ? "border-gold bg-gold/5" : "border-line hover:border-navy-soft") + '">' +
+        return '<button type="button" data-org="' + o.id + '" class="text-left rounded-2xl border-2 p-5 transition-all ' +
+          (on ? "border-black bg-paper-dim shadow-[0_16px_32px_-18px_rgba(0,0,0,0.4)]" : "border-line hover:border-line-strong") + '">' +
           '<div class="flex items-center justify-between mb-2">' +
-          '<span class="text-xs font-bold ' + (o.factor === 1 ? "text-ink-soft" : "text-navy") + '">' +
+          '<span class="text-xs font-bold ' + (o.factor === 1 ? "text-ink-faint" : "text-ink") + '">' +
           (o.factor === 1 ? "PRECIO BASE" : o.tag) + "</span>" +
-          (on ? '<span class="w-5 h-5 rounded-full bg-gold text-navy flex items-center justify-center"><span class="material-symbols-outlined !text-[14px]">check</span></span>' : '<span class="w-5 h-5 rounded-full border border-line"></span>') +
+          (on ? '<span class="w-5 h-5 rounded-full bg-black text-white flex items-center justify-center"><span class="material-symbols-outlined !text-[14px]">check</span></span>' : '<span class="w-5 h-5 rounded-full border border-line-strong"></span>') +
           "</div>" +
           '<p class="font-semibold text-ink mb-1">' + o.name + "</p>" +
           '<p class="text-xs text-ink-soft">Factor ' + o.factor.toFixed(2) + "</p>" +
           "</button>";
       }).join("") +
       "</div>" +
-      '<p class="text-xs text-ink-soft bg-canvas rounded-lg p-4 mt-5 max-w-2xl">' + ORG_NOTE + "</p>" +
+      '<p class="text-xs text-ink-soft bg-paper-dim rounded-xl p-4 mt-5 max-w-2xl leading-relaxed">' + ORG_NOTE + "</p>" +
       "</div>";
   }
 
@@ -353,30 +353,30 @@
 
   function renderServicios() {
     var monthlyBlock = state.categories.visuales ? "" +
-      '<div class="mt-8 pt-6 border-t border-line">' +
+      '<div class="mt-8 pt-7 border-t border-line">' +
       '<p class="text-sm font-semibold text-ink mb-3">Volumen mensual estimado para Visuales</p>' +
       '<div class="grid sm:grid-cols-3 gap-4">' +
       MONTHLY_FIELDS.map(function (f) {
         return '<label class="block">' +
           '<span class="text-xs text-ink-soft block mb-1.5">' + f.label + "</span>" +
           '<input type="number" min="0" data-monthly="' + f.key + '" value="' + state.monthly[f.key] + '" ' +
-          'class="w-full rounded-lg border border-line px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gold/60 focus:border-gold"/></label>';
+          'class="w-full rounded-xl border border-line bg-paper-dim/60 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black/10 focus:border-black focus:bg-paper"/></label>';
       }).join("") +
       "</div></div>" : "";
 
     return "" +
-      '<div class="p-6 md:p-10">' +
-      '<p class="text-xs font-bold tracking-wide text-gold uppercase mb-1">03 · Servicios</p>' +
-      '<h2 class="font-display font-bold text-2xl text-navy mb-2">¿Qué necesita esta marca?</h2>' +
-      '<p class="text-sm text-ink-soft mb-6">Selecciona una o varias categorías. En el siguiente paso ajustas las cantidades de cada una.</p>' +
+      '<div class="p-7 md:p-11">' +
+      '<p class="text-xs font-bold tracking-wide text-ink-faint uppercase mb-1.5">03 · Servicios</p>' +
+      '<h2 class="font-display font-bold text-2xl md:text-[28px] text-ink mb-2">¿Qué necesita esta marca?</h2>' +
+      '<p class="text-sm text-ink-soft mb-7">Selecciona una o varias categorías. En el siguiente paso ajustas las cantidades de cada una.</p>' +
       '<div class="grid sm:grid-cols-3 gap-4">' +
       CATEGORIES.map(function (c) {
         var on = state.categories[c.id];
-        return '<button type="button" data-cat="' + c.id + '" class="text-left rounded-xl border-2 p-5 transition-colors ' +
-          (on ? "border-gold bg-gold/5" : "border-line hover:border-navy-soft") + '">' +
-          '<div class="flex items-center justify-between mb-3">' +
-          '<span class="w-10 h-10 rounded-lg bg-navy text-white flex items-center justify-center"><span class="material-symbols-outlined">' + c.icon + "</span></span>" +
-          (on ? '<span class="w-5 h-5 rounded-full bg-gold text-navy flex items-center justify-center"><span class="material-symbols-outlined !text-[14px]">check</span></span>' : '<span class="w-5 h-5 rounded-full border border-line"></span>') +
+        return '<button type="button" data-cat="' + c.id + '" class="text-left rounded-2xl border-2 p-5 transition-all ' +
+          (on ? "border-black bg-paper-dim shadow-[0_16px_32px_-18px_rgba(0,0,0,0.4)]" : "border-line hover:border-line-strong") + '">' +
+          '<div class="flex items-center justify-between mb-4">' +
+          '<span class="w-11 h-11 rounded-xl bg-black text-white flex items-center justify-center"><span class="material-symbols-outlined">' + c.icon + "</span></span>" +
+          (on ? '<span class="w-5 h-5 rounded-full bg-black text-white flex items-center justify-center"><span class="material-symbols-outlined !text-[14px]">check</span></span>' : '<span class="w-5 h-5 rounded-full border border-line-strong"></span>') +
           "</div>" +
           '<p class="font-semibold text-ink mb-1">' + c.name + "</p>" +
           '<p class="text-xs text-ink-soft">' + c.desc + "</p>" +
@@ -393,39 +393,39 @@
     if (!cats.length) {
       return '<div class="p-10 text-center text-ink-soft">' +
         '<p class="mb-3">Aún no seleccionaste ningún servicio.</p>' +
-        '<button type="button" data-goto="servicios" class="text-navy font-semibold underline">Volver a Servicios</button></div>';
+        '<button type="button" data-goto="servicios" class="text-ink font-semibold underline">Volver a Servicios</button></div>';
     }
     if (!state.activeCatTab || cats.indexOf(state.activeCatTab) === -1) state.activeCatTab = cats[0];
 
-    var tabs = cats.length > 1 ? '<div class="flex gap-2 px-6 md:px-10 pt-6 flex-wrap">' +
+    var tabs = cats.length > 1 ? '<div class="flex gap-2 px-7 md:px-11 pt-7 flex-wrap">' +
       cats.map(function (id) {
         var c = CATEGORIES.filter(function (x) { return x.id === id; })[0];
         var on = state.activeCatTab === id;
-        return '<button type="button" data-tab="' + id + '" class="px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-1.5 ' +
-          (on ? "bg-navy text-white" : "bg-canvas text-ink-soft") + '">' +
+        return '<button type="button" data-tab="' + id + '" class="px-4 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-1.5 transition-colors ' +
+          (on ? "bg-black text-white" : "bg-paper-dim text-ink-soft hover:bg-line") + '">' +
           '<span class="material-symbols-outlined !text-[16px]">' + c.icon + "</span>" + c.name +
           '<span class="text-xs opacity-70">· ' + money(categorySubtotal(id)) + "</span></button>";
       }).join("") + "</div>" : "";
 
-    return '<div class="pb-6">' + tabs +
-      '<div class="p-6 md:p-10 pt-6">' + renderCategoryBody(state.activeCatTab) + "</div></div>";
+    return '<div class="pb-7">' + tabs +
+      '<div class="p-7 md:p-11 pt-7">' + renderCategoryBody(state.activeCatTab) + "</div></div>";
   }
 
   function renderCategoryBody(catId) {
     var cat = CATALOG[catId];
-    if (cat.mode === "project") return cat.sections.map(renderProjectSection).join('<div class="h-px bg-line my-6"></div>');
-    return cat.sections.map(renderMonthlySection).join('<div class="h-px bg-line my-6"></div>');
+    if (cat.mode === "project") return cat.sections.map(renderProjectSection).join('<div class="h-px bg-line my-7"></div>');
+    return cat.sections.map(renderMonthlySection).join('<div class="h-px bg-line my-7"></div>');
   }
 
   function renderProjectSection(sec) {
     var subtotal = sec.items.reduce(function (s, it) { return s + qty(it.id) * it.price; }, 0);
     return '<div class="mb-2">' +
       '<div class="flex items-center justify-between mb-1">' +
-      '<h3 class="font-display font-semibold text-lg text-navy">' + sec.name + "</h3>" +
-      '<span class="text-sm font-semibold text-navy">' + money(subtotal) + "</span></div>" +
+      '<h3 class="font-display font-semibold text-lg text-ink">' + sec.name + "</h3>" +
+      '<span class="text-sm font-semibold text-ink">' + money(subtotal) + "</span></div>" +
       '<p class="text-xs text-ink-soft mb-4">' + sec.desc + "</p>" +
       sec.items.map(itemRow).join("") +
-      (sec.note ? '<p class="text-xs text-ink-soft bg-canvas rounded-lg p-3 mt-3">' + sec.note + "</p>" : "") +
+      (sec.note ? '<p class="text-xs text-ink-soft bg-paper-dim rounded-xl p-3.5 mt-3 leading-relaxed">' + sec.note + "</p>" : "") +
       "</div>";
 
     function itemRow(it) {
@@ -442,11 +442,11 @@
     var subtotal = sec.items.reduce(function (s, it) { return s + qty(it.id) * it.price; }, 0);
     return '<div class="mb-2">' +
       '<div class="flex items-center justify-between mb-1 flex-wrap gap-2">' +
-      '<h3 class="font-display font-semibold text-lg text-navy">' + sec.name + "</h3>" +
+      '<h3 class="font-display font-semibold text-lg text-ink">' + sec.name + "</h3>" +
       '<div class="flex items-center gap-3">' +
       '<span class="text-xs font-semibold px-2.5 py-1 rounded-full ' + (current === total ? "bg-emerald-100 text-emerald-700" : "bg-amber-100 text-amber-700") + '">' +
       current + " / " + total + " sugeridos</span>" +
-      '<button type="button" data-reset-section="' + sec.id + '" class="text-xs font-semibold text-navy underline">Restablecer esta sección</button>' +
+      '<button type="button" data-reset-section="' + sec.id + '" class="text-xs font-semibold text-ink underline">Restablecer esta sección</button>' +
       "</div></div>" +
       '<p class="text-xs text-ink-soft mb-4">' + sec.desc + "</p>" +
       sec.items.map(function (it, i) {
@@ -456,27 +456,27 @@
           (it.formula ? '<p class="text-[11px] text-ink-soft/80 mt-0.5">' + it.formula + "</p>" : "");
         return rowShell(it, q, b, meta);
       }).join("") +
-      '<div class="flex justify-end mt-2"><span class="text-sm font-semibold text-navy">' + money(subtotal) + " este mes</span></div>" +
+      '<div class="flex justify-end mt-2"><span class="text-sm font-semibold text-ink">' + money(subtotal) + " este mes</span></div>" +
       "</div>";
   }
 
   function rowShell(it, q, badge, meta) {
-    return '<div class="flex items-center justify-between gap-4 py-3 border-b border-line last:border-b-0">' +
+    return '<div class="flex items-center justify-between gap-4 py-3.5 border-b border-line last:border-b-0">' +
       '<div class="min-w-0 flex-1">' +
       '<div class="flex items-center gap-2 flex-wrap">' +
       '<p class="font-medium text-sm text-ink">' + it.name + "</p>" +
-      (it.tag ? '<span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-navy/10 text-navy">' + it.tag + "</span>" : "") +
+      (it.tag ? '<span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-paper-dim text-ink-soft">' + it.tag + "</span>" : "") +
       (badge ? '<span class="text-[11px] font-semibold px-2 py-0.5 rounded-full ' + badge.cls + '">' + badge.label + "</span>" : "") +
       "</div>" +
       (it.desc ? '<p class="text-xs text-ink-soft mt-0.5">' + it.desc + "</p>" : "") +
       meta +
       "</div>" +
-      '<div class="flex flex-col items-end gap-1 shrink-0">' +
-      '<span class="text-sm font-bold text-navy">' + money(q * it.price) + "</span>" +
-      '<div class="flex items-center rounded-lg border border-line overflow-hidden">' +
-      '<button type="button" data-step="-1" data-id="' + it.id + '" class="stepper-btn w-8 h-8 flex items-center justify-center hover:bg-canvas"><span class="material-symbols-outlined !text-[16px]">remove</span></button>' +
+      '<div class="flex flex-col items-end gap-1.5 shrink-0">' +
+      '<span class="text-sm font-bold text-ink">' + money(q * it.price) + "</span>" +
+      '<div class="flex items-center rounded-xl border border-line overflow-hidden">' +
+      '<button type="button" data-step="-1" data-id="' + it.id + '" class="stepper-btn w-8 h-8 flex items-center justify-center hover:bg-paper-dim"><span class="material-symbols-outlined !text-[16px]">remove</span></button>' +
       '<span class="w-9 text-center text-sm font-semibold">' + q + "</span>" +
-      '<button type="button" data-step="1" data-id="' + it.id + '" class="stepper-btn w-8 h-8 flex items-center justify-center hover:bg-canvas"><span class="material-symbols-outlined !text-[16px]">add</span></button>' +
+      '<button type="button" data-step="1" data-id="' + it.id + '" class="stepper-btn w-8 h-8 flex items-center justify-center hover:bg-paper-dim"><span class="material-symbols-outlined !text-[16px]">add</span></button>' +
       "</div></div></div>";
   }
 
@@ -499,49 +499,51 @@
         });
       });
       if (!rows.length) return "";
-      return '<div class="mb-6">' +
-        '<div class="flex items-center gap-2 mb-2"><span class="material-symbols-outlined text-navy">' + cat.icon + '</span>' +
-        '<h3 class="font-display font-semibold text-navy">' + cat.name + "</h3></div>" +
-        '<div class="pl-1">' + rows.join("") + "</div>" +
-        '<div class="flex justify-end pt-2 border-t border-line mt-2">' +
-        '<span class="text-sm font-bold text-navy">Subtotal ' + cat.name.toLowerCase() + ": " + money(categorySubtotal(catId)) + "</span></div>" +
+      return '<div class="mb-5 bg-paper-dim/60 rounded-2xl p-5">' +
+        '<div class="flex items-center gap-2.5 mb-3"><span class="w-8 h-8 rounded-lg bg-black text-white flex items-center justify-center shrink-0"><span class="material-symbols-outlined !text-[18px]">' + cat.icon + '</span></span>' +
+        '<h3 class="font-display font-semibold text-ink">' + cat.name + "</h3></div>" +
+        '<div>' + rows.join("") + "</div>" +
+        '<div class="flex justify-end pt-2.5 border-t border-line mt-2">' +
+        '<span class="text-sm font-bold text-ink">Subtotal ' + cat.name.toLowerCase() + ": " + money(categorySubtotal(catId)) + "</span></div>" +
         "</div>";
-    }).join('<div class="h-px bg-line my-4"></div>') : '<p class="text-ink-soft text-sm">No se seleccionaron servicios.</p>';
+    }).join("") : '<p class="text-ink-soft text-sm">No se seleccionaron servicios.</p>';
 
-    return '<div class="p-6 md:p-10">' +
-      '<p class="text-xs font-bold tracking-wide text-gold uppercase mb-1">05 · Tu plan</p>' +
-      '<h2 class="font-display font-bold text-2xl text-navy mb-6">Resumen de la cotización</h2>' +
+    return '<div class="p-7 md:p-11">' +
+      '<p class="text-xs font-bold tracking-wide text-ink-faint uppercase mb-1.5">05 · Tu plan</p>' +
+      '<h2 class="font-display font-bold text-2xl md:text-[28px] text-ink mb-7">Resumen de la cotización</h2>' +
 
-      '<div class="grid md:grid-cols-2 gap-6 mb-8">' +
-      '<div class="bg-canvas rounded-xl p-5">' +
-      '<p class="text-xs font-semibold text-ink-soft uppercase mb-2">Contacto</p>' +
+      '<div class="grid md:grid-cols-2 gap-5 mb-7">' +
+      '<div class="bg-paper-dim rounded-2xl p-5">' +
+      '<p class="text-xs font-semibold text-ink-faint uppercase mb-2">Contacto</p>' +
       '<p class="font-semibold text-ink">' + (state.datos.nombre || "—") + "</p>" +
       '<p class="text-sm text-ink-soft">' + (state.datos.marca || "—") + "</p>" +
       '<p class="text-sm text-ink-soft">' + (state.datos.email || "—") + (state.datos.telefono ? " · " + state.datos.telefono : "") + "</p>" +
-      (state.datos.rubro ? '<p class="text-xs text-ink-soft mt-1">' + state.datos.rubro + "</p>" : "") +
+      (state.datos.rubro ? '<p class="text-xs text-ink-faint mt-1">' + state.datos.rubro + "</p>" : "") +
       "</div>" +
-      '<div class="bg-canvas rounded-xl p-5">' +
-      '<p class="text-xs font-semibold text-ink-soft uppercase mb-2">Tipo de organización</p>' +
+      '<div class="bg-paper-dim rounded-2xl p-5">' +
+      '<p class="text-xs font-semibold text-ink-faint uppercase mb-2">Tipo de organización</p>' +
       '<p class="font-semibold text-ink">' + (org ? org.name : "—") + "</p>" +
       '<p class="text-sm text-ink-soft">Factor ' + factor.toFixed(2) + (factor > 1 ? " (" + Math.round((factor - 1) * 100) + "%)" : "") + "</p>" +
       "</div></div>" +
 
       body +
 
-      '<div class="mt-6 pt-6 border-t-2 border-navy/10 space-y-1.5">' +
-      '<div class="flex justify-between text-sm text-ink-soft"><span>Subtotal servicios</span><span>' + money(sub) + "</span></div>" +
-      '<div class="flex justify-between text-sm text-ink-soft"><span>Factor de organización (×' + factor.toFixed(2) + ")</span><span>" + money(total - sub) + "</span></div>" +
-      '<div class="flex justify-between text-xl font-display font-bold text-navy pt-2"><span>Total estimado</span><span>' + money(total) + "</span></div>" +
+      '<div class="mt-2 bg-black rounded-2xl p-6 md:p-7">' +
+      '<div class="flex justify-between text-sm text-white/55 mb-1.5"><span>Subtotal servicios</span><span>' + money(sub) + "</span></div>" +
+      '<div class="flex justify-between text-sm text-white/55 mb-5"><span>Factor de organización (×' + factor.toFixed(2) + ")</span><span>" + money(total - sub) + "</span></div>" +
+      '<div class="flex items-end justify-between pt-5 border-t border-white/15">' +
+      '<span class="text-xs font-bold uppercase tracking-wider text-white/60">Total estimado</span>' +
+      '<span class="font-display font-bold text-3xl md:text-[40px] text-white leading-none">' + money(total) + "</span></div>" +
       "</div>" +
 
-      '<div class="mt-6 bg-navy/5 rounded-xl p-4 text-sm text-ink-soft">' +
+      '<div class="mt-5 bg-paper-dim rounded-2xl p-5 text-sm text-ink-soft leading-relaxed">' +
       "¿Necesitas auditorías, configuración de cuentas, publicidad paga o videos largos de YouTube? " +
-      'Eso se cotiza aparte — revisa <a href="anexo.html" class="text-navy font-semibold underline">los servicios adicionales</a>.' +
+      'Eso se cotiza aparte — revisa <a href="anexo.html" class="text-ink font-semibold underline">los servicios adicionales</a>.' +
       "</div>" +
 
       '<div class="no-print flex flex-wrap gap-3 mt-6">' +
-      '<button type="button" id="btn-print" class="px-5 py-2.5 rounded-lg bg-navy text-white text-sm font-semibold flex items-center gap-2"><span class="material-symbols-outlined !text-[18px]">print</span>Imprimir / Guardar PDF</button>' +
-      '<button type="button" id="btn-copy" class="px-5 py-2.5 rounded-lg border border-line text-sm font-semibold flex items-center gap-2"><span class="material-symbols-outlined !text-[18px]">content_copy</span>Copiar resumen</button>' +
+      '<button type="button" id="btn-print" class="px-5 py-2.5 rounded-xl bg-black text-white text-sm font-semibold flex items-center gap-2 hover:bg-charcoal transition-colors"><span class="material-symbols-outlined !text-[18px]">print</span>Imprimir / Guardar PDF</button>' +
+      '<button type="button" id="btn-copy" class="px-5 py-2.5 rounded-xl border border-line-strong text-sm font-semibold flex items-center gap-2 hover:bg-paper-dim transition-colors"><span class="material-symbols-outlined !text-[18px]">content_copy</span>Copiar resumen</button>' +
       "</div>" +
       "</div>";
   }
@@ -612,7 +614,7 @@
     }
 
     if (state.step === "cantidades" || state.step === "plan") {
-      footerTotal.innerHTML = "Total estimado: <strong class=\"text-navy\">" + money(grandTotal()) + "</strong>";
+      footerTotal.innerHTML = "Total estimado: <strong class=\"text-white\">" + money(grandTotal()) + "</strong>";
     } else {
       footerTotal.textContent = "";
     }
